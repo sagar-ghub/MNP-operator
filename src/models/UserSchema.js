@@ -20,6 +20,29 @@ const UserSchema = new Schema({
     default: Date.now,
   },
   apiToken: [{ type: String }],
+  wallet: {
+    type: mongoose.Types.Decimal128,
+    default: 0,
+  },
+  walletHistory: [
+    {
+      amount: {
+        type: mongoose.Types.Decimal128,
+        default: 0,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      type: {
+        type: String,
+        // default: "credit",
+      },
+      description: {
+        type: String,
+      },
+    },
+  ],
 });
 UserSchema.pre("save", function (next) {
   var user = this;

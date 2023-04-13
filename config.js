@@ -82,6 +82,11 @@ const config = {
     "PENDING",
     "Null",
   ],
+  amount_charged: {
+    allplan: 0.5,
+    mobile: 0.2,
+    singleplan: 0.4,
+  },
 };
 
 module.exports = config;

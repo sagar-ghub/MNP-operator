@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 // const knexdb = require("./db");
 const fileUpload = require("express-fileupload");
+const { createHandler } = require("graphql-http/lib/use/express");
+const { schema } = require("./graphql/graphqlSchema");
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/rkit", {
@@ -14,17 +16,24 @@ const mobilePlan = require("./routes/mobilePlan");
 const csvupload = require("./routes/csvUploads");
 const paytmApi = require("./routes/paytmApi");
 const userApi = require("./routes/userRoutes");
+const walletApi = require("./routes/transactionRoutes");
+const requireAuth = require("./middlewares/requireAuth");
 
 const app = express();
 // app.use(express.static(path.join(__dirname, '../public')));
 // app.use(requestHeader);
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
+
+// app.use(requireAuth("api"));
+
+app.all("/graphql", createHandler({ schema }));
 //add router
 app.use("/mobile", mobilePlan);
 app.use("/csv", csvupload);
 app.use("/paytm", paytmApi);
 app.use("/auth", userApi);
+app.use("/wallet", walletApi);
 
 //for testing
 // const testRoute = require("./routes/testRoute");
