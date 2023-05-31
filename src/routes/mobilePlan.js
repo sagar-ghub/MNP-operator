@@ -201,10 +201,10 @@ router.post(
   }
 );
 
-router.get(
+router.post(
   "/getMnpDetails",
   requireAuth("api"),
-  query("mobile").not().isEmpty().trim().escape().isMobilePhone(),
+  body("mobile").not().isEmpty().trim().escape().isMobilePhone(),
   async (req, res) => {
     const validationErrors = validationResult(req);
     if (!validationErrors.isEmpty()) {
@@ -214,7 +214,7 @@ router.get(
         validationErrors: validationErrors.array({ onlyFirstError: true }),
       });
     }
-    const { mobile } = req.query;
+    const { mobile } = req.body;
     try {
       const result = await MnpSchema.findOne({ mobile: mobile });
       if (!result) {
@@ -254,11 +254,11 @@ router.get("/getPlans", async (req, res) => {
     return res.status(500).json({ error: 1, msg: "error" });
   }
 });
-router.get(
+router.post(
   "/checkAmount",
   requireAuth("api"),
-  query("operator_id").not().isEmpty().trim().escape().isNumeric(),
-  query("circle_id").not().isEmpty().trim().escape().isNumeric(),
+  body("operator_id").not().isEmpty().trim().escape().isNumeric(),
+  body("circle_id").not().isEmpty().trim().escape().isNumeric(),
   async (req, res) => {
     // const { operator_id, circle_id } = req.query;
     const validationErrors = validationResult(req);
@@ -269,9 +269,75 @@ router.get(
         validationErrors: validationErrors.array({ onlyFirstError: true }),
       });
     }
-    const operator_id = req.query.operator_id || "";
-    const circle_id = req.query.circle_id || "";
-    const amount = req.query.amount || "";
+    const operator_id = req.body.operator_id || "";
+    let circle_id = req.body.circle_id || "";
+    const amount = req.body.amount || "";
+
+    switch (circle_id) {
+      case 5:
+        circle_id = 13;
+        break;
+      case 6:
+        circle_id = 5;
+        break;
+      case 7:
+        circle_id = 6;
+        break;
+      case 8:
+        circle_id = 7;
+        break;
+      case 9:
+        circle_id = 13;
+        break;
+      case 10:
+        circle_id = 8;
+        break;
+      case 11:
+        circle_id = 9;
+        break;
+      case 12:
+        circle_id = 10;
+        break;
+      case 13:
+        circle_id = 12;
+        break;
+      case 14:
+        circle_id = 11;
+        break;
+      case 15:
+        circle_id = 12;
+        break;
+      case 16:
+        circle_id = 13;
+        break;
+      case 17:
+        circle_id = 14;
+        break;
+      case 18:
+        circle_id = 15;
+        break;
+      case 19:
+        circle_id = 16;
+        break;
+      case 20:
+        circle_id = 17;
+        break;
+      case 21:
+        circle_id = 18;
+        break;
+      case 22:
+        circle_id = 19;
+        break;
+      case 23:
+        circle_id = 19;
+        break;
+      case 51:
+        circle_id = 13;
+        break;
+      default:
+        circle_id = circle_id;
+        break;
+    }
 
     // console.log(searchObj);
     // if (amount == "") delete searchObj["circles.plan.amount"];

@@ -18,7 +18,8 @@ const paytmApi = require("./routes/paytmApi");
 const userApi = require("./routes/userRoutes");
 const walletApi = require("./routes/transactionRoutes");
 const requireAuth = require("./middlewares/requireAuth");
-
+const billfetch = require("./routes/billFetch");
+const euronet = require("./routes/euroNetBill");
 const app = express();
 // app.use(express.static(path.join(__dirname, '../public')));
 // app.use(requestHeader);
@@ -34,6 +35,8 @@ app.use("/csv", csvupload);
 app.use("/paytm", paytmApi);
 app.use("/auth", userApi);
 app.use("/wallet", walletApi);
+app.use("/billfetch", billfetch);
+app.use("/recharge", euronet);
 
 //for testing
 // const testRoute = require("./routes/testRoute");
